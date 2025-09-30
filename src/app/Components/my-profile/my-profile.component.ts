@@ -3,6 +3,7 @@ import { ProfileViewComponent } from '../../Gear/profile-view/profile-view.compo
 import { MainService } from '../../Services/main.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { UserService } from '../../Services/user.service';
 
 @Component({
   selector: 'app-my-profile',
@@ -11,7 +12,7 @@ import { FormsModule } from '@angular/forms';
   styleUrl: './my-profile.component.css'
 })
 export class MyProfileComponent implements OnInit{
-    constructor(public service:MainService){}
+    constructor(public service:MainService,public uservice:UserService){}
 
     ngOnInit(): void {
       this.getProfileData()
@@ -31,6 +32,7 @@ export class MyProfileComponent implements OnInit{
           this.profileData.profile.userBio=value.profile.userBio
         this.profileData.fullName=value.fullName
         this.profileData.profile.profileImageUrl=value.profile.profileImageUrl
+        // if (value.)
 
         },
         error:(err)=>{
@@ -76,6 +78,9 @@ export class MyProfileComponent implements OnInit{
         this.userBio=this.profileData.profile.userBio
         this.fullname=this.profileData.fullName
         this.profileImageUrl=this.profileData.profile.profileImageUrl
+        if (res.banned){
+          this.uservice.isBanned=true
+        }
       },
       error: (err) => {
         this.loading=false

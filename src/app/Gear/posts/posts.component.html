@@ -1,7 +1,9 @@
-<div class="">
+<div  class="">
     <div class="flex items-center gap-1.5 px-5 py-3">
         <img [src]="i.profileImageUrl? i.profileImageUrl : 'https://imgs.search.brave.com/0w706iazLuiZA7_266Xh7P1rBBHA32banx87yLoT5ZI/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9pLnBp/bmltZy5jb20vb3Jp/Z2luYWxzLzY2L2Zm/L2NiLzY2ZmZjYjU2/NDgyYzY0YmRmNmI2/MDEwNjg3OTM4ODM1/LmpwZw'" class="w-[32px] aspect-square rounded-full" alt="">
-        <p [routerLink]="['/main/user-profile',i.userId]">{{i.username}}</p>
+        <div class="flex items-center justify-center" [routerLink]="['/main/user-profile',i.userId]">{{i.username}}
+            <img *ngIf="i.varified" src="/varifiedLogo.png" class="w-4 h-4" alt="Verified" title="Verified"/>
+        </div>
     </div>
     <div  class="w-full  m-auto ">
         <img class="m-auto h-full aaa w-full rounded-[10px]" [src]="i.imageUrl" alt="">
@@ -26,7 +28,11 @@
         <input [(ngModel)]="commentText" type="text" class="bg-gray-200 p-2 rounded-2xl min-w-[70%]" placeholder="comment here" name="" id=""><button (click)="comment(i.id)" class="bg-blue-400 rounded-2xl p-2">Post</button>
         <div class="max-h-[100px] overflow-y-auto">
             <div class="flex gap-2" *ngFor="let comment of i.comments">
-            <h3 class="font-bold">{{comment.username}}</h3>
+                <div class="flex items-center ">
+                    <h3 class="font-bold">{{comment.username}}</h3>
+                    <img *ngIf="comment.varified" src="/varifiedLogo.png" class="w-4 h-4" alt="Verified" title="Verified"/>
+
+            </div>
             <p>{{comment.commentText}}</p>
         </div>
         </div>

@@ -2,52 +2,61 @@ import { Injectable } from '@angular/core';
 import { MyDetailsDTO } from '../app.component';
 import { HttpClient } from '@angular/common/http';
 import { MainService } from './main.service';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
 
-  private currentUser: MyDetailsDTO | null = null;
-  private isLoaded = false; // so we don’t refetch on every call
+  public currentUser: MyDetailsDTO | null = null;
+   isLoaded = false; // so we don’t refetch on every call
+  isBanned=false
 
-  constructor(private http: HttpClient,public mainService:MainService) {}
+  constructor(private http: HttpClient,public mainService:MainService,public router:Router) {}
+checkIsAdmin():boolean{
+   const roles = this.mainService.getRoles();
+const adminRoles = ['ROLE_ADMIN', 'ROLE_OWNER'];
 
-  /**
-   * Loads the logged-in user's details from backend (/getMe).
-   * Only calls API if we haven’t loaded yet.
-   */
-  loadCurrentUser() {
-    this.mainService.getMe().subscribe({
-      next: (user) => {
-        this.currentUser = user;
-        console.log('Current user loaded:', user);
-      },
-      error: (err) => {
-        console.log('Could not load user', err);
-        this.currentUser = null;
-      },
-    });
-  }
+return roles.some((role:any) => adminRoles.includes(role));
+}
 
-  /**
-   * Get the cached user synchronously (may be null if not loaded yet).
-   */
+loadCurrentUser() {
+  this.mainService.getMe().subscribe({
+    next: (user) => {
+      this.currentUser = user;
+      console.log('Current user loaded:', user);
+
+      // Check ban status
+     
+      if (user.banned) {
+        this.isBanned=true
+        document.body.style.overflow = 'hidden'; // disable scrolling
+      } else {
+        document.body.style.overflow = 'auto'; // restore scroll
+      }
+    },
+    
+    error: (err) => {
+      console.log('Could not load user', err);
+      this.currentUser = null;
+      localStorage.removeItem('isBanned');
+    },
+  });
+}
+
+
   getCurrentUser(): MyDetailsDTO | null {
+    // console.log(this.currentUser);
     return this.currentUser;
   }
 
-  /**
-   * Set user manually (e.g. after login).
-   */
+  
   setCurrentUser(user: MyDetailsDTO | null) {
     this.currentUser = user;
     this.isLoaded = true;
   }
 
-  /**
-   * Clears user (e.g. on logout).
-   */
   clearUser() {
     this.currentUser = null;
     this.isLoaded = false;

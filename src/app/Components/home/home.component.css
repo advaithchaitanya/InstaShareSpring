@@ -10,11 +10,11 @@
 }
 
 .custom-prev {
-  left: -50px;
+  left: 50px;
 }
 
 .custom-next {
-  right: -50px;
+  right: 50px;
 }
 *{
     box-sizing: border-box;

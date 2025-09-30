@@ -6,8 +6,10 @@ import { MyProfileComponent } from './Components/my-profile/my-profile.component
 import { SearchComponent } from './Components/search/search.component';
 import { PageNotFoundComponent } from './Components/page-not-found/page-not-found.component';
 import { MainComponent } from './Components/main/main.component';
-import { SavedComponent } from './Components/saved/saved.component';
+
 import { authGuard } from './guards/auth.guard';
+import { adminGuard } from './guards/admin.guard';
+import { DashboardComponent } from './Components/dashboard/dashboard.component';
 
 export const routes: Routes = [
     {path:'',component:AuthComponent},
@@ -20,7 +22,7 @@ export const routes: Routes = [
             {path:'user-profile/:id',component:ProfileComponent},
             {path:'my-profile',component:MyProfileComponent},
             {path:'search',component:SearchComponent},
-            {path:'saved',component:SavedComponent},
+            {path:'admin/dashboard',canActivate:[adminGuard],component:DashboardComponent},
             { path: '', redirectTo: 'home', pathMatch: 'full' },
         ]
     },

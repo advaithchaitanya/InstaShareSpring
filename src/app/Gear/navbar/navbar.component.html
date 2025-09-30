@@ -32,25 +32,26 @@
                 </div>
                 <p routerLinkActive="active" routerLink="/main/home">Home</p>
                 <p routerLinkActive="active" routerLink="/main/my-profile">Profile</p>
-                <p routerLink="/main/saved" routerLinkActive="active">Saved </p>
+                <p *ngIf="userService.checkIsAdmin()" routerLink="/main/admin/dashboard" routerLinkActive="active">dashboard </p>
                 <button (click)="onLogout()" class="bg-blue-500 rounded p-2 text-white">LogOut</button>
             </div>
         </nav>
         <nav [ngClass]="isToggle?'disp':'hide'"
-            class="absolute border-2 md:left-[-33.5%] bg-[#282727aa] right-0 z-100 backdrop-blur-3xl md:hidden transition-all w-[100vw] flex ">
+        class="absolute border-2 md:left-[-33.5%] bg-[#282727aa] right-0 z-100 backdrop-blur-3xl md:hidden transition-all w-[100vw] flex ">
             <div class="w-[60%] m-auto">
 
                 <div class="text-center text-white flex flex-col items-center">
                     <p routerLinkActive="active" routerLink="/main/home" class="text-center w-fit ">Home</p>
                     <p routerLinkActive="active" routerLink="/main/search" class="text-center w-fit ">Search</p>
                     <p routerLinkActive="active" routerLink="/main/my-profile" class="text-center w-fit">Profile</p>
-                    <p routerLinkActive="active" class="text-center w-fit" routerLink="/main/saved">Saved</p>
+                    <p *ngIf="userService.checkIsAdmin()" routerLink="/main/admin/dashboard" routerLinkActive="active">dashboard </p>
+                    <!-- <p routerLinkActive="active" class="text-center w-fit" routerLink="/main/saved">Saved</p> -->
                     <button (click)="onLogout()" class="bg-blue-500 rounded p-2 w-fit text-white">LogOut</button>
                 </div>
             </div>
         </nav>
     </div>
     <div class="">
-
+        
     </div>
 </div>

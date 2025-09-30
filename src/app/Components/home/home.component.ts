@@ -58,7 +58,7 @@ export class HomeComponent implements OnInit   {
    
    
    slideConfig = {
-  slidesToShow: 7,
+  slidesToShow: 5,
   slidesToScroll: 4,
    arrows: true,
     prevArrow: '<button class="slick-prev custom-prev">←</button>',

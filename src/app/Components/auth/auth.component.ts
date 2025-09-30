@@ -23,7 +23,7 @@ export class AuthComponent {
       password!:string
       fullname!:string
       email!:string
-      islogin=false;
+      islogin=true;
       
       login(){
         if (!this.username || !this.password){
@@ -33,7 +33,7 @@ export class AuthComponent {
         next:(value)=> {
           // console.log(value);
           this.service.setJwtToken(value.token)
-          
+          this.service.setRoles(value.roles)          
           console.log(this.cookie.get(this.service.jwtKey));
           this.router.navigate(['/main'])
 

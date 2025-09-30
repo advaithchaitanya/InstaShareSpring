@@ -15,13 +15,12 @@ export class SearchComponent implements OnInit {
   constructor(public service:MainService){
     
   }
+
   ngOnInit(): void {
+    // this.getAllPost()
+    this.service.getSearched();
+  }
     
-  }
-  clear(){
-    // alert(1)
-    this.service.searchPosts=[]
-  }
   
   
 }

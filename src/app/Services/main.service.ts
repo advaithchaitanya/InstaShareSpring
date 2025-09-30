@@ -5,7 +5,7 @@ import { CookieService } from 'ngx-cookie-service';
 
 
 
-
+import AOS from "aos"
 @Injectable({
   providedIn: 'root'
 })
@@ -13,17 +13,38 @@ export class MainService implements OnInit{
 
   constructor(public http:HttpClient,public cookie:CookieService) {
       this.setJwtToken(this.getJwtToken());
+      this.setRoles(this.getRoles())
+      AOS.init( )
    }
    ngOnInit(): void {
      this.setJwtToken(this.getJwtToken());
+     console.log(this.jwtToken);
+    //  alert(1)
+     this.setRoles(this.getRoles())
    }
 
+   posts:any=[]
    searchPosts:any=[]
    isStoryEdit=false;
    isEdit=false;
    isEditProfile=false;
    isFollowerView=false;
+   loadingPosts=false
    isFollowingView=false;
+   getSearched(){
+    this.getAllPosts().subscribe({
+      next:(res)=>{
+        console.log(res)
+        
+        this.posts=res
+        this.searchPosts=this.posts;
+      },
+      error:(err)=>{
+        this.loadingPosts=false
+        console.log(err)
+      }
+    })
+   }
   //  isEditStory=false
    editShow(){
     this.isEdit=true
@@ -58,17 +79,24 @@ export class MainService implements OnInit{
    loadingSearchedPosts=false
    cookieKey="savedPosts"
    jwtKey="jwtToken"
+   roleKey="roles"
+   roles:any[]=[]
    jwtToken=""
    searchInput=""
    searchHandler(){
     this.loadingSearchedPosts=true
     if (this.searchInput.trim()!==''){
-    
+      this.searchPosts=this.posts.filter((i:any)=>i.caption.includes(this.searchInput)|| i.username.includes(this.searchInput))
+      this.loadingSearchedPosts=false
     }
     else{
-        
+        this.loadingSearchedPosts=false
+        console.log("cant load posts");
     }
     
+   }
+   clear(){
+    this.searchPosts=[]
    }
   //   getSearchedPosts(){
   //   const searchInput=this.service.searchInput
@@ -131,11 +159,21 @@ export class MainService implements OnInit{
    }
    getJwtToken(){
     const jwt_token=this.cookie.get(this.jwtKey);
+    console.log(jwt_token);
     return jwt_token?jwt_token:'';
    }
    setJwtToken(token:string){
     this.cookie.set(this.jwtKey,token,{expires:7,path:"/"})
     this.jwtToken=token
+    console.log(this.jwtToken);
+   }
+   getRoles(){
+    const role=this.cookie.get(this.roleKey);
+    return role?JSON.parse(role):[];
+   }
+   setRoles(roles:any[]){
+    this.cookie.set(this.roleKey,JSON.stringify(roles),{expires:7,path:"/"})
+    this.roles=roles
    }
   //  reMoveSavePost(post:Post){
   //   const posts=this.getSavedPosts().filter((i:Post)=>i.post_id!=post.post_id)
@@ -287,7 +325,12 @@ export class MainService implements OnInit{
 )
    }
    deleteJwtKey(){
-    this.cookie.delete(this.jwtKey);
+  this.cookie.delete(this.jwtKey, '/'); // common root path
+    this.deleteRoleKey()
+   }
+   deleteRoleKey(){
+  this.cookie.delete(this.roleKey, '/'); // common root path
+
    }
    
 }

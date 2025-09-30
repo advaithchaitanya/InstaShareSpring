@@ -3,6 +3,7 @@ import { Component, ElementRef, HostListener } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterLink, RouterModule } from '@angular/router';
 import { MainService } from '../../Services/main.service';
+import { UserService } from '../../Services/user.service';
 
 
 @Component({
@@ -12,7 +13,7 @@ import { MainService } from '../../Services/main.service';
   styleUrl: './navbar.component.css'
 })
 export class NavbarComponent {
-  constructor(public nav:Router,public eRef:ElementRef,public service:MainService,public router:Router){
+  constructor(public nav:Router,public eRef:ElementRef,public service:MainService,public router:Router,public userService:UserService){
   
   }
   search=false;

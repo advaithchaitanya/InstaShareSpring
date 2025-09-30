@@ -22,6 +22,10 @@ export class PostsComponent implements OnInit {
         if (myLiked){
           this.liked=true
         }
+        const mySaved=this.i.saves.some((l:any)=>l.userId===myLike.id)
+        if (mySaved){
+          this.saved=true
+        }
       }
     }
     constructor(public service:MainService,public userService:UserService){}
@@ -35,7 +39,7 @@ export class PostsComponent implements OnInit {
         next:(res)=>{
           this.liked=!this.liked
           this.i.likes.push(res)
-          alert(res.message)
+          
           console.log(res)
 
         },
@@ -49,7 +53,7 @@ export class PostsComponent implements OnInit {
         this.service.postUnLike(this.i.id).subscribe({
         next:(res)=>{
           this.liked=!this.liked
-          alert(res.message)
+         
           console.log(res)
 
         },
